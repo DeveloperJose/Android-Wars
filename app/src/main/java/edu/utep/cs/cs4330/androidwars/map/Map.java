@@ -1,11 +1,18 @@
+/**
+ * Author: Jose Perez <josegperez@mail.com> and Diego Reynoso
+ */
 package edu.utep.cs.cs4330.androidwars.map;
 
 import java.util.List;
 import java.util.Scanner;
 
+import edu.utep.cs.cs4330.androidwars.map.terrain.Terrain;
 import edu.utep.cs.cs4330.androidwars.util.ResourceManager;
 import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
+/**
+ * A map representing a playing field of a specified size
+ */
 public class Map {
     private static final String TAG = "AndroidWars.Map";
     private List<MapListener> listeners;
@@ -13,14 +20,36 @@ public class Map {
     public final int width;
     public final int height;
 
+    /**
+     * Reads a map from a given filename
+     * The extension for the filename is not needed
+     * @param filename Name of file in the raw resources (no extension)
+     * @return Map read from the file
+     */
     public static Map fromFilename(String filename){
         Scanner input = ResourceManager.getScanner(filename);
 
-        int width = input.nextInt();
-        int height = input.nextInt();
+        final int width = input.nextInt();
+        final int height = input.nextInt();
+        final String separator = " ";
 
+        input.nextLine(); // Eat empty newline (just Java things)
+
+        // Begin map loading
         Map mapTemp = new Map(width, height);
 
+        // Terrain loading
+        for(int y = 0; y < height; y++){
+            String[] line = input.nextLine().split(separator);
+            for(int x = 0; x < width; x++){
+                String terrainName = line[x];
+                Terrain terrain = Terrain.fromName(terrainName);
+
+                mapTemp.placeAt(x, y).terrain = terrain;
+            }
+        }
+
+        input.close();
         return mapTemp;
     }
 

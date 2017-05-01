@@ -1,3 +1,6 @@
+/**
+ * Author: Jose Perez <josegperez@mail.com> and Diego Reynoso
+ */
 package edu.utep.cs.cs4330.androidwars.activity;
 
 import android.support.v7.app.AppCompatActivity;
@@ -25,10 +28,12 @@ public class SandboxActivity extends AppCompatActivity {
 
         mapViewSandbox = (MapView)findViewById(R.id.map_view_sandbox);
 
-        Map map = new Map(6, 8);
-        map.placeAt(0,0).terrain = new TerrainPlain();
-        map.placeAt(5,6).terrain = new TerrainForest();
-
+        Bundle intentData = getIntent().getExtras();
+        Map map = null;
+        if(intentData != null){
+            String filename = intentData.getString(MapListActivity.MAP_FILENAME);
+            map = Map.fromFilename(filename);
+        }
         mapViewSandbox.setMap(map);
     }
 }

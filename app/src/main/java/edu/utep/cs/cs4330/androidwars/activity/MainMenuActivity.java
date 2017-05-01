@@ -1,4 +1,6 @@
-// Author: Jose Perez <josegperez@mail.com> and Diego Reynoso
+/**
+ * Author: Jose Perez <josegperez@mail.com> and Diego Reynoso
+ */
 package edu.utep.cs.cs4330.androidwars.activity;
 
 import android.content.Intent;
