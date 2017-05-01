@@ -6,10 +6,13 @@ package edu.utep.cs.cs4330.androidwars.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
+import edu.utep.cs.cs4330.androidwars.map.GameManager;
 import edu.utep.cs.cs4330.androidwars.map.Map;
 import edu.utep.cs.cs4330.androidwars.map.MapView;
 import edu.utep.cs.cs4330.androidwars.R;
+import edu.utep.cs.cs4330.androidwars.map.Team;
 import edu.utep.cs.cs4330.androidwars.map.Vector2;
 import edu.utep.cs.cs4330.androidwars.map.unit.TestUnit;
 import edu.utep.cs.cs4330.androidwars.sound.SongManager;
@@ -35,11 +38,20 @@ public class SandboxActivity extends AppCompatActivity {
             map = Map.fromFilename(filename);
         }
 
-        Vector2 pos = new Vector2(3, 3);
-        TestUnit testUnit = new TestUnit(pos);
-        map.placeAt(pos).unit = testUnit;
+        Team teamOne = new Team(map, 1);
+        teamOne.addUnit(new TestUnit(new Vector2(0, 0)));
+        teamOne.addUnit(new TestUnit(new Vector2(1, 0)));
+        teamOne.addUnit(new TestUnit(new Vector2(2, 0)));
+        teamOne.addUnit(new TestUnit(new Vector2(3, 0)));
+
+        Team teamTwo = new Team(map, 2);
+        teamTwo.addUnit(new TestUnit(new Vector2(map.width-1, map.height-1)));
+        teamTwo.addUnit(new TestUnit(new Vector2(map.width-2, map.height-1)));
+        teamTwo.addUnit(new TestUnit(new Vector2(map.width-3, map.height-1)));
+        teamTwo.addUnit(new TestUnit(new Vector2(map.width-4, map.height-1)));
 
         mapViewSandbox.setMap(map);
+        GameManager gameManager = new GameManager(mapViewSandbox, teamOne, teamTwo);
     }
 
     @Override

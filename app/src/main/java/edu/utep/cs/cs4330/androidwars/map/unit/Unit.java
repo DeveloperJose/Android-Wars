@@ -4,6 +4,7 @@
 package edu.utep.cs.cs4330.androidwars.map.unit;
 
 import android.graphics.Canvas;
+import android.graphics.RectF;
 import android.util.Log;
 
 import java.util.List;
@@ -15,18 +16,36 @@ import edu.utep.cs.cs4330.androidwars.map.Vector2;
 import edu.utep.cs.cs4330.androidwars.map.terrain.Terrain;
 
 public abstract class Unit extends Sprite {
+    public int currentTeam;
+    public boolean canMove;
+
+    protected abstract List<Vector2> getMovementShape();
+    protected abstract boolean canTraverseTerrain(Terrain terrain);
+
     public Unit(String filename, int colorDebug, Vector2 mapPosition) {
         super(filename, colorDebug, mapPosition);
+        currentTeam = -1;
+        canMove = false;
     }
 
-    public abstract List<Vector2> getMovementShape();
-    public abstract boolean canTraverseTerrain(Terrain terrain);
+    @Override
+    public int getAlpha() {
+        if(!canMove)
+            return 10;
+
+        return super.getAlpha();
+    }
 
     public boolean canTraverse(Map map, int x, int y){
         return canTraverse(map, new Vector2(x, y));
     }
 
     public boolean canTraverse(Map map, Vector2 pos){
+        // Cannot move when it's not your turn
+        if(!canMove)
+            return false;
+
+        // Cannot move outside of our movement range
         if(!getMovementShape().contains(pos))
             return false;
 
@@ -34,9 +53,11 @@ public abstract class Unit extends Sprite {
     }
 
     public boolean canTraverse(Place place){
+        // Cannot move across certain terrains
         if(!canTraverseTerrain(place.terrain))
             return false;
 
+        // TODO: Don't allow movement across other units
         return true;
     }
 }

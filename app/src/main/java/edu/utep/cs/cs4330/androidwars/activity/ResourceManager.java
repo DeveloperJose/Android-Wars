@@ -18,6 +18,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import edu.utep.cs.cs4330.androidwars.R;
+import edu.utep.cs.cs4330.androidwars.map.Team;
 
 public abstract class ResourceManager {
     private static String TAG = "AndroidWars.RsrcMngr";
@@ -28,6 +29,13 @@ public abstract class ResourceManager {
         if(random == null)
             random = new Random();
         return random;
+    }
+
+    public static int getRandomTeam(Team teamOne, Team teamTwo){
+        int min = Math.min(teamOne.teamNumber, teamTwo.teamNumber);
+        int max = Math.max(teamOne.teamNumber, teamTwo.teamNumber);
+
+        return getRandom().nextInt(max) + min;
     }
 
     public static int getRandomColor(){

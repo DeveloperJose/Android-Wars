@@ -11,8 +11,6 @@ import android.graphics.RectF;
 import edu.utep.cs.cs4330.androidwars.activity.ResourceManager;
 
 public abstract class Sprite {
-    private static final Paint paintUnit = new Paint(Paint.ANTI_ALIAS_FLAG);
-
     private Bitmap bitmapSprite;
     private int colorDebug;
 
@@ -24,15 +22,25 @@ public abstract class Sprite {
         this.mapPosition = mapPosition;
     }
 
+    public int getAlpha(){
+        return 255;
+    }
+
+    private Paint getAlphaPaint(){
+        Paint p = new Paint();
+        p.setAlpha(getAlpha());
+        return p;
+    }
+
     public void draw(Canvas canvas, RectF rect){
         if(bitmapSprite == null)
             drawDebug(canvas, rect);
         else
-            canvas.drawBitmap(bitmapSprite, null, rect, paintUnit);
+            canvas.drawBitmap(bitmapSprite, null, rect, getAlphaPaint());
     }
 
     public void drawDebug(Canvas canvas, RectF rect){
-        Paint p = paintUnit;
+        Paint p = getAlphaPaint();
         p.setColor(colorDebug);
         canvas.drawRect(rect, p);
     }
