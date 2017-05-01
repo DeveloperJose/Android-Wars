@@ -5,14 +5,17 @@ package edu.utep.cs.cs4330.androidwars.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import edu.utep.cs.cs4330.androidwars.map.Map;
 import edu.utep.cs.cs4330.androidwars.map.MapView;
 import edu.utep.cs.cs4330.androidwars.R;
+import edu.utep.cs.cs4330.androidwars.sound.SongManager;
+import edu.utep.cs.cs4330.androidwars.sound.SoundManager;
 
 public class SandboxActivity extends AppCompatActivity {
-
     private MapView mapViewSandbox;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,5 +33,23 @@ public class SandboxActivity extends AppCompatActivity {
             map = Map.fromFilename(filename);
         }
         mapViewSandbox.setMap(map);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SongManager.getInstance(this).playSong(R.raw.song_nowhere_land);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SongManager.getInstance(this).onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SongManager.getInstance(this).onResume();
     }
 }

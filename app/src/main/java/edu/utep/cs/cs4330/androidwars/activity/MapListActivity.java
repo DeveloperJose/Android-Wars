@@ -1,3 +1,6 @@
+/**
+ * Author: Jose Perez <josegperez@mail.com> and Diego Reynoso
+ */
 package edu.utep.cs.cs4330.androidwars.activity;
 
 import android.content.Intent;
@@ -12,19 +15,20 @@ import android.widget.ListView;
 import java.util.List;
 
 import edu.utep.cs.cs4330.androidwars.R;
-import edu.utep.cs.cs4330.androidwars.sound.SongType;
+import edu.utep.cs.cs4330.androidwars.sound.SongManager;
 import edu.utep.cs.cs4330.androidwars.sound.SoundManager;
 
 public class MapListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     public static final String MAP_FILENAME = "edu.utep.cs.cs4330.androidwars.MAP_FILENAME";
+
     private ListView listViewMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_list);
 
         ResourceManager.context = this;
-        SoundManager.playSong(SongType.Battle);
 
         listViewMap = (ListView)findViewById(R.id.list_view_map);
 
@@ -42,5 +46,23 @@ public class MapListActivity extends AppCompatActivity implements AdapterView.On
         Intent intent = new Intent(this, SandboxActivity.class);
         intent.putExtra(MAP_FILENAME, selectedFilename);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SongManager.getInstance(this).onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SongManager.getInstance(this).onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SongManager.getInstance(this).playSong(R.raw.song_kick_shock);
     }
 }

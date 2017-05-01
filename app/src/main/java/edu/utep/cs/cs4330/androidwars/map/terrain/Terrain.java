@@ -33,7 +33,7 @@ public abstract class Terrain extends Sprite {
         else if(name.equalsIgnoreCase("w"))
             return new TerrainWall();
 
-        Log.d(TAG, "Attempted to load an invalid terrain: " + name);
+        Log.d(TAG, "Attempted to loadSound an invalid terrain: " + name);
         return null;
     }
 }

@@ -1,59 +1,99 @@
 /**
- * Author: Jose Perez <josegperez@mail.com>
+ * Author: Jose Perez <josegperez@mail.com> and Diego Reynoso
+ * https://gist.github.com/tom-dignan/2212532
  */
 package edu.utep.cs.cs4330.androidwars.sound;
 
-import android.media.AudioAttributes;
+import java.util.HashMap;
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.Build;
+import android.util.Log;
 
-import edu.utep.cs.cs4330.androidwars.R;
-import edu.utep.cs.cs4330.androidwars.activity.ResourceManager;
+public class SoundManager {
+    /** SoundPool left volume */
+    private static final float LEFT_VOLUME = 1.0f;
 
-public final class SoundManager {
+    /** SoundPool right volume */
+    private static final float RIGHT_VOLUME = 1.0f;
+
+    /** All sounds will have equal priority */
+    private static final int STREAM_PRIORITY  = 0;
+
+    /** No loop mode */
+    public static final int MODE_NO_LOOP = 0;
+
+    /** SoundPool playback rate */
+    private static final float PLAYBACK_RATE = 1.0f;
+
+    private static final String TAG = "AndroidWars.SoundMngr";
+
+    /** Inner SoundManager instance */
+    private static SoundManager sInstance = null;
+
+    /** Mapping of resource ids to sound ids returned by loadSound() */
+    private HashMap<Integer, Integer> mSoundMap = new HashMap<>();
+
+    /** SoundPool instance */
+    private SoundPool mSoundPool;
+
+    /** Application Context */
+    private Context mContext;
+
+    /** Maximum concurrent streams that can playSound */
+    private static final int MAX_STREAMS = 2;
+
+    /** Private constructor for singleton */
+    private SoundManager(Context context) {
+        mContext = context.getApplicationContext();
+
+        // Sound effect management
+        mSoundPool = new SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC, 0);
+        mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                mSoundPool.play(sampleId, LEFT_VOLUME, RIGHT_VOLUME, STREAM_PRIORITY, MODE_NO_LOOP, PLAYBACK_RATE);
+            }
+        });
+    }
+
+    /** Static access to internal instance */
+    public static SoundManager getInstance(Context context) {
+        if (sInstance == null)
+            sInstance = new SoundManager(context.getApplicationContext());
+
+        return sInstance;
+    }
+
+    /** Loads a sound. Called automatically by playSound() if not already loaded */
+    public void loadSound(int id) {
+        mSoundMap.put(id, mSoundPool.load(mContext, id, 1));
+    }
+
     /**
-     * How many sounds can be played at once.
+     * Test if sound is loaded, call with id from R.raw
+     *
+     * @param resourceId
+     * @return true|false
      */
-    private static final int MAX_SOUND_POOL_STREAMS = 4;
+    public boolean isSoundLoaded(int resourceId) {
+        return mSoundMap.containsKey(resourceId);
+    }
 
-    private static final int LOW_PRIORITY = 1;
-    private static final int NORMAL_PRIORITY = 2;
-    private static final int HIGH_PRIORITY = 3;
-
-    private static int SONG_MAIN_ID = -1;
-    private static int SONG_BATTLE_ID = -1;
-    private static int SONG_CURRENT = -1;
-
-    private static SoundPool soundPool;
-    private static void loadSoundPool() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            SoundPool.Builder builder = new SoundPool.Builder();
-            builder.setMaxStreams(MAX_SOUND_POOL_STREAMS);
-            soundPool = builder.build();
+    /** Unload sound, prints warning if sound is not loaded */
+    public void unloadSound(int id) {
+        if (mSoundMap.containsKey(id)) {
+            int soundId = mSoundMap.remove(id);
+            mSoundPool.unload(soundId);
         } else {
-            soundPool = new SoundPool(MAX_SOUND_POOL_STREAMS, AudioManager.STREAM_MUSIC, 0);
+            Log.w(TAG, "sound: " + id + " is not loaded!");
         }
-
-        SONG_MAIN_ID = soundPool.load(ResourceManager.context, R.raw.song_kick_shock, 1);
-        SONG_BATTLE_ID = soundPool.load(ResourceManager.context, R.raw.song_nowhere_land, 1);
     }
 
-    public static void playSong(SongType songType){
-        if(soundPool == null)
-           loadSoundPool();
-
-        int soundID;
-        if(songType == SongType.MainMenu)
-            soundID = SONG_MAIN_ID;
+    public void playSound(int resourceId) {
+        if (isSoundLoaded(resourceId))
+            mSoundPool.play(mSoundMap.get(resourceId), LEFT_VOLUME, RIGHT_VOLUME, STREAM_PRIORITY, MODE_NO_LOOP, PLAYBACK_RATE);
         else
-            soundID = SONG_BATTLE_ID;
-
-        if(SONG_CURRENT != -1)
-            soundPool.stop(SONG_CURRENT);
-
-        SONG_CURRENT = soundPool.play(soundID, 1.0f, 1.0f, HIGH_PRIORITY, -1, 1.0f);
+            loadSound(resourceId);
     }
-
-    private SoundManager() { }
 }

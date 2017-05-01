@@ -18,6 +18,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
         // Set-up Settings
         ResourceManager.context = this;
+
     }
 
     public void onClickSinglePlayer(View v) {
