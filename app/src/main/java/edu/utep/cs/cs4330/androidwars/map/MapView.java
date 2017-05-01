@@ -62,23 +62,23 @@ public final class MapView extends View {
             return;
 
         Vector2 newPosition = new Vector2(x, y);
-        Place p = map.placeAt(newPosition);
+        Place place = map.placeAt(newPosition);
 
         // Check if we selected a unit to display path highlight
-        if (p.unit != null) {
-            unitSelected = p.unit;
+        if (place.unit != null) {
+            unitSelected = place.unit;
         }
         // We didn't select a unit
         // Check if there was a past unit selected
         else if (unitSelected != null) {
             // Check if we clicked inside the highlight
-            //if (unitSelected.canMoveTo(map, newPosition)) {
+            if (unitSelected.canTraverse(place)) {
                 // The player wants to move
-              //  Vector2 oldPosition = unitSelected.mapPosition;
-                //unitSelected.mapPosition = newPosition;
-                //map.placeAt(newPosition).unit = unitSelected;
-                //map.placeAt(oldPosition).unit = null;
-            //}
+                Vector2 oldPosition = unitSelected.mapPosition;
+                unitSelected.mapPosition = newPosition;
+                map.placeAt(newPosition).unit = unitSelected;
+                map.placeAt(oldPosition).unit = null;
+            }
             // Discard selection highlight
             unitSelected = null;
         }
@@ -124,14 +124,14 @@ public final class MapView extends View {
                 if(map == null)
                     canvas.drawRect(rect, ResourceManager.getRandomPaint());
                 // Regular map drawing
-                else {
+                else
                     map.placeAt(x, y).draw(canvas, rect);
-                }
+
 
                 // Selection highlighting
-                if(unitSelected != null && unitSelected.canTraverse(map, new Vector2(x, y))){
+                if(unitSelected != null && unitSelected.canTraverse(map, x, y))
                     canvas.drawRect(rect, paintMapHighlight);
-                }
+
             }
         }
 

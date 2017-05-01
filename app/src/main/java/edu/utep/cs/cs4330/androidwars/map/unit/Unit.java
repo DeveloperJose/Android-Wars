@@ -22,6 +22,10 @@ public abstract class Unit extends Sprite {
     public abstract List<Vector2> getMovementShape();
     public abstract boolean canTraverseTerrain(Terrain terrain);
 
+    public boolean canTraverse(Map map, int x, int y){
+        return canTraverse(map, new Vector2(x, y));
+    }
+
     public boolean canTraverse(Map map, Vector2 pos){
         if(!getMovementShape().contains(pos))
             return false;
