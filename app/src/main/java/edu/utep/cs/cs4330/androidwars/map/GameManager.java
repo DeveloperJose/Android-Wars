@@ -19,14 +19,12 @@ public class GameManager implements MapViewListener {
     }
 
     private MapView mapView;
-    private Map map;
     private Team teamOne;
     private Team teamTwo;
     private int currentPlayer;
 
     public GameManager(MapView mapView, Team teamOne, Team teamTwo){
         this.mapView = mapView;
-        this.map = mapView.getMap();
         this.teamOne = teamOne;
         this.teamTwo = teamTwo;
 
@@ -65,14 +63,16 @@ public class GameManager implements MapViewListener {
         if(selectedUnit.currentTeam != getCurrentPlayer())
             return;
 
-        Place place = map.placeAt(newPosition);
+        if(!selectedUnit.canMove)
+            return;
+
         // The player wants to move and can traverse the place
-        if (selectedUnit.canTraverse(place)) {
+        if (selectedUnit.canTraverse(mapView.getMap(), newPosition)) {
             selectedUnit.canMove = false;
             selectedUnit.mapPosition = newPosition;
 
-            map.placeAt(newPosition).unit = selectedUnit;
-            map.placeAt(oldPosition).unit = null;
+            mapView.getMap().placeAt(newPosition).unit = selectedUnit;
+            mapView.getMap().placeAt(oldPosition).unit = null;
 
             // Check if the player has moved all their units
             if(getCurrentTeam().getAvailableUnits() == 0)

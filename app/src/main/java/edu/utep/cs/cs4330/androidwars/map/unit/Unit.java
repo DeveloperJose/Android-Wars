@@ -31,7 +31,7 @@ public abstract class Unit extends Sprite {
     @Override
     public int getAlpha() {
         if(!canMove)
-            return 10;
+            return 100;
 
         return super.getAlpha();
     }
@@ -41,10 +41,6 @@ public abstract class Unit extends Sprite {
     }
 
     public boolean canTraverse(Map map, Vector2 pos){
-        // Cannot move when it's not your turn
-        if(!canMove)
-            return false;
-
         // Cannot move outside of our movement range
         if(!getMovementShape().contains(pos))
             return false;

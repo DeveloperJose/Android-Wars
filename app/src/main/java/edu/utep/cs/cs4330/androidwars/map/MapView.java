@@ -50,7 +50,7 @@ public final class MapView extends View {
     private static Paint paintText = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     {
-        paintText.setTextSize(50f);
+        paintText.setTextSize(100f);
         paintText.setColor(Color.WHITE);
     }
 
@@ -90,6 +90,7 @@ public final class MapView extends View {
             @Override
             public void run() {
                 textMap.remove(text);
+                invalidate();
             }
         }, durationMs);
 

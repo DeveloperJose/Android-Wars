@@ -50,11 +50,13 @@ public class TestUnit extends Unit{
         p.setStyle(Paint.Style.STROKE);
         p.setColor(Color.RED);
         p.setStrokeWidth(5f);
+        p.setAlpha(getAlpha());
         canvas.drawOval(rect, p);
 
         p = new Paint();
         p.setColor(Color.RED);
         p.setTextSize(50f);
+        p.setAlpha(getAlpha());
         String name = "Diego";
         float offset = p.measureText(name) / 2;
         canvas.drawText("Diego", rect.centerX() - offset, rect.centerY(), p);
