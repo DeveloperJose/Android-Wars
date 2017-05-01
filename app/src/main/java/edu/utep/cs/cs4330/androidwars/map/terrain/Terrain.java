@@ -6,32 +6,33 @@ package edu.utep.cs.cs4330.androidwars.map.terrain;
 import android.util.Log;
 
 import edu.utep.cs.cs4330.androidwars.map.Sprite;
+import edu.utep.cs.cs4330.androidwars.map.Vector2;
 
 public abstract class Terrain extends Sprite {
     private static String TAG = "AndroidWars.Terrain";
-    public Terrain(String filename, int colorDebug) {
-        super(filename, colorDebug);
+    public Terrain(String filename, int colorDebug, Vector2 mapPosition) {
+        super(filename, colorDebug, mapPosition);
     }
 
-    public static Terrain fromName(String name){
+    public static Terrain fromName(String name, Vector2 mapPosition){
         if(name.equalsIgnoreCase("bh"))
-            return new TerrainBridgeH();
+            return new TerrainBridgeH(mapPosition);
         else if(name.equalsIgnoreCase("bv"))
-            return new TerrainBridgeV();
+            return new TerrainBridgeV(mapPosition);
         else if(name.equalsIgnoreCase("f"))
-            return new TerrainForest();
+            return new TerrainForest(mapPosition);
         else if(name.equalsIgnoreCase("m"))
-            return new TerrainMountain();
+            return new TerrainMountain(mapPosition);
         else if(name.equalsIgnoreCase("p"))
-            return new TerrainPlain();
+            return new TerrainPlain(mapPosition);
         else if(name.equalsIgnoreCase("rh"))
-            return new TerrainRiverH();
+            return new TerrainRiverH(mapPosition);
         else if(name.equalsIgnoreCase("rv"))
-            return new TerrainRiverV();
+            return new TerrainRiverV(mapPosition);
         else if(name.equalsIgnoreCase("v"))
-            return new TerrainValley();
+            return new TerrainValley(mapPosition);
         else if(name.equalsIgnoreCase("w"))
-            return new TerrainWall();
+            return new TerrainWall(mapPosition);
 
         Log.d(TAG, "Attempted to loadSound an invalid terrain: " + name);
         return null;

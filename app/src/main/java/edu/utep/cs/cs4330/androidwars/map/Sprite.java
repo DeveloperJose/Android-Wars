@@ -16,9 +16,12 @@ public abstract class Sprite {
     private Bitmap bitmapSprite;
     private int colorDebug;
 
-    public Sprite(String filename, int colorDebug){
+    protected Vector2 mapPosition;
+
+    public Sprite(String filename, int colorDebug, Vector2 mapPosition){
         bitmapSprite = ResourceManager.getBitmap(filename);
         this.colorDebug = colorDebug;
+        this.mapPosition = mapPosition;
     }
 
     public void draw(Canvas canvas, RectF rect){

@@ -13,11 +13,13 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import edu.utep.cs.cs4330.androidwars.activity.ResourceManager;
+import edu.utep.cs.cs4330.androidwars.map.unit.Unit;
 
 public final class MapView extends View {
     private static final String TAG = "AndroidWars.BoardView";
     private final int colorMapBackground = Color.argb(255, 102, 163, 255);
     private final int colorMapGrid = Color.argb(50, 255, 255, 255);
+    private final int colorMapHighlight = Color.argb(125, 255, 255, 125);
 
     private final Paint paintMapBackground = new Paint(Paint.ANTI_ALIAS_FLAG);
     {
@@ -30,7 +32,13 @@ public final class MapView extends View {
         paintMapGrid.setStrokeWidth(2);
     }
 
+    private final Paint paintMapHighlight = new Paint(Paint.ANTI_ALIAS_FLAG);
+    {
+        paintMapHighlight.setColor(colorMapHighlight);
+    }
+
     private Map map;
+    private Unit unitSelected;
 
     public MapView(Context context) {
         super(context);
@@ -50,9 +58,31 @@ public final class MapView extends View {
     }
 
     public void onBoardViewTouch(int x, int y) {
+        if (map == null)
+            return;
 
+        Vector2 newPosition = new Vector2(x, y);
+        Place p = map.placeAt(newPosition);
+
+        // Check if we selected a unit to display path highlight
+        if (p.unit != null) {
+            unitSelected = p.unit;
+        }
+        // We didn't select a unit
+        // Check if there was a past unit selected
+        else if (unitSelected != null) {
+            // Check if we clicked inside the highlight
+            //if (unitSelected.canMoveTo(map, newPosition)) {
+                // The player wants to move
+              //  Vector2 oldPosition = unitSelected.mapPosition;
+                //unitSelected.mapPosition = newPosition;
+                //map.placeAt(newPosition).unit = unitSelected;
+                //map.placeAt(oldPosition).unit = null;
+            //}
+            // Discard selection highlight
+            unitSelected = null;
+        }
     }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -94,8 +124,14 @@ public final class MapView extends View {
                 if(map == null)
                     canvas.drawRect(rect, ResourceManager.getRandomPaint());
                 // Regular map drawing
-                else
+                else {
                     map.placeAt(x, y).draw(canvas, rect);
+                }
+
+                // Selection highlighting
+                if(unitSelected != null && unitSelected.canTraverse(map, new Vector2(x, y))){
+                    canvas.drawRect(rect, paintMapHighlight);
+                }
             }
         }
 

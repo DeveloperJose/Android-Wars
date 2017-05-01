@@ -19,5 +19,8 @@ public final class Place implements Serializable {
     public void draw(Canvas canvas, RectF rect){
         if(terrain != null)
             terrain.draw(canvas, rect);
+
+        if(unit != null)
+            unit.draw(canvas, rect);
     }
 }

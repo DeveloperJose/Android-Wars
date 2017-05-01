@@ -42,9 +42,11 @@ public final class Map {
             String[] line = input.nextLine().split(separator);
             for(int x = 0; x < line.length; x++){
                 String terrainName = line[x];
-                Terrain terrain = Terrain.fromName(terrainName);
+                Vector2 pos = new Vector2(x, y);
 
-                mapTemp.placeAt(x, y).terrain = terrain;
+                // Terrain loading
+                Terrain terrain = Terrain.fromName(terrainName, pos);
+                mapTemp.placeAt(pos).terrain = terrain;
             }
         }
 

@@ -10,6 +10,8 @@ import android.util.Log;
 import edu.utep.cs.cs4330.androidwars.map.Map;
 import edu.utep.cs.cs4330.androidwars.map.MapView;
 import edu.utep.cs.cs4330.androidwars.R;
+import edu.utep.cs.cs4330.androidwars.map.Vector2;
+import edu.utep.cs.cs4330.androidwars.map.unit.TestUnit;
 import edu.utep.cs.cs4330.androidwars.sound.SongManager;
 import edu.utep.cs.cs4330.androidwars.sound.SoundManager;
 
@@ -32,6 +34,11 @@ public class SandboxActivity extends AppCompatActivity {
             String filename = intentData.getString(MapListActivity.MAP_FILENAME);
             map = Map.fromFilename(filename);
         }
+
+        Vector2 pos = new Vector2(3, 3);
+        TestUnit testUnit = new TestUnit(pos);
+        map.placeAt(pos).unit = testUnit;
+
         mapViewSandbox.setMap(map);
     }
 

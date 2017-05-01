@@ -40,7 +40,7 @@ public class SoundManager {
     /** Application Context */
     private Context mContext;
 
-    /** Maximum concurrent streams that can playSound */
+    /** Maximum concurrent streams that canTraverse playSound */
     private static final int MAX_STREAMS = 2;
 
     /** Private constructor for singleton */

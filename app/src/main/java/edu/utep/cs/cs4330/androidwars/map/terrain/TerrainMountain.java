@@ -5,8 +5,10 @@ package edu.utep.cs.cs4330.androidwars.map.terrain;
 
 import android.graphics.Color;
 
+import edu.utep.cs.cs4330.androidwars.map.Vector2;
+
 public class TerrainMountain extends Terrain {
-    public TerrainMountain(){
-        super("terrain_mountain", Color.MAGENTA);
+    public TerrainMountain(Vector2 mapPosition){
+        super("terrain_mountain", Color.MAGENTA, mapPosition);
     }
 }
