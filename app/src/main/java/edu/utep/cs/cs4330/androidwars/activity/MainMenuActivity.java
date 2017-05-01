@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import edu.utep.cs.cs4330.androidwars.R;
-import edu.utep.cs.cs4330.androidwars.util.ResourceManager;
 
 public class MainMenuActivity extends AppCompatActivity {
     @Override
@@ -18,8 +17,7 @@ public class MainMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
 
         // Set-up Settings
-        ResourceManager.resources = getResources();
-        ResourceManager.packageName = getPackageName();
+        ResourceManager.context = this;
     }
 
     public void onClickSinglePlayer(View v) {

@@ -12,7 +12,8 @@ import android.widget.ListView;
 import java.util.List;
 
 import edu.utep.cs.cs4330.androidwars.R;
-import edu.utep.cs.cs4330.androidwars.util.ResourceManager;
+import edu.utep.cs.cs4330.androidwars.sound.SongType;
+import edu.utep.cs.cs4330.androidwars.sound.SoundManager;
 
 public class MapListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     public static final String MAP_FILENAME = "edu.utep.cs.cs4330.androidwars.MAP_FILENAME";
@@ -22,8 +23,8 @@ public class MapListActivity extends AppCompatActivity implements AdapterView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_list);
 
-        ResourceManager.resources = getResources();
-        ResourceManager.packageName = getPackageName();
+        ResourceManager.context = this;
+        SoundManager.playSong(SongType.Battle);
 
         listViewMap = (ListView)findViewById(R.id.list_view_map);
 

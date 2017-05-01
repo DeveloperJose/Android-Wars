@@ -9,9 +9,6 @@ import android.os.Bundle;
 import edu.utep.cs.cs4330.androidwars.map.Map;
 import edu.utep.cs.cs4330.androidwars.map.MapView;
 import edu.utep.cs.cs4330.androidwars.R;
-import edu.utep.cs.cs4330.androidwars.util.ResourceManager;
-import edu.utep.cs.cs4330.androidwars.map.terrain.TerrainForest;
-import edu.utep.cs.cs4330.androidwars.map.terrain.TerrainPlain;
 
 public class SandboxActivity extends AppCompatActivity {
 
@@ -22,9 +19,7 @@ public class SandboxActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sandbox);
 
         // Set-up Settings
-        // TODO: Remove when Sandbox is not the main
-        ResourceManager.resources = getResources();
-        ResourceManager.packageName = getPackageName();
+        ResourceManager.context = this;
 
         mapViewSandbox = (MapView)findViewById(R.id.map_view_sandbox);
 

@@ -7,13 +7,12 @@ import java.util.List;
 import java.util.Scanner;
 
 import edu.utep.cs.cs4330.androidwars.map.terrain.Terrain;
-import edu.utep.cs.cs4330.androidwars.util.ResourceManager;
-import edu.utep.cs.cs4330.androidwars.util.Vector2;
+import edu.utep.cs.cs4330.androidwars.activity.ResourceManager;
 
 /**
  * A map representing a playing field of a specified size
  */
-public class Map {
+public final class Map {
     private static final String TAG = "AndroidWars.Map";
     private List<MapListener> listeners;
     private Place[][] places;

@@ -12,9 +12,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import edu.utep.cs.cs4330.androidwars.util.ResourceManager;
+import edu.utep.cs.cs4330.androidwars.activity.ResourceManager;
 
-public class MapView extends View {
+public final class MapView extends View {
     private static final String TAG = "AndroidWars.BoardView";
     private final int colorMapBackground = Color.argb(255, 102, 163, 255);
     private final int colorMapGrid = Color.argb(50, 255, 255, 255);
