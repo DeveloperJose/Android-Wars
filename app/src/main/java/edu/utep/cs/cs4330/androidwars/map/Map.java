@@ -41,7 +41,7 @@ public class Map {
         // Terrain loading
         for(int y = 0; y < height; y++){
             String[] line = input.nextLine().split(separator);
-            for(int x = 0; x < width; x++){
+            for(int x = 0; x < line.length; x++){
                 String terrainName = line[x];
                 Terrain terrain = Terrain.fromName(terrainName);
 

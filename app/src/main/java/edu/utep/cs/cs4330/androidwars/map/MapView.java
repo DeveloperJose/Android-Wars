@@ -16,8 +16,8 @@ import edu.utep.cs.cs4330.androidwars.util.ResourceManager;
 
 public class MapView extends View {
     private static final String TAG = "AndroidWars.BoardView";
-    private final int colorMapBackground = Color.rgb(102, 163, 255);
-    private final int colorMapGrid = Color.WHITE;
+    private final int colorMapBackground = Color.argb(255, 102, 163, 255);
+    private final int colorMapGrid = Color.argb(50, 255, 255, 255);
 
     private final Paint paintMapBackground = new Paint(Paint.ANTI_ALIAS_FLAG);
     {
