@@ -1,14 +1,14 @@
 /**
  * Author: Jose Perez <josegperez@mail.com> and Diego Reynoso
  */
-package edu.utep.cs.cs4330.androidwars.map.terrain;
+package edu.utep.cs.cs4330.androidwars.game.terrain;
 
 import android.graphics.Color;
 
-import edu.utep.cs.cs4330.androidwars.map.Vector2;
+import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
 public class TerrainRiverH extends Terrain {
-    public TerrainRiverH(Vector2 mapPosition){
+    public TerrainRiverH(Vector2 mapPosition) {
         super("terrain_riverh", Color.BLUE, mapPosition);
     }
 }

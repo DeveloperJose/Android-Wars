@@ -4,8 +4,8 @@
 package edu.utep.cs.cs4330.androidwars.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,8 +15,8 @@ import android.widget.ListView;
 import java.util.List;
 
 import edu.utep.cs.cs4330.androidwars.R;
+import edu.utep.cs.cs4330.androidwars.resource.ResourceManager;
 import edu.utep.cs.cs4330.androidwars.sound.SongManager;
-import edu.utep.cs.cs4330.androidwars.sound.SoundManager;
 
 public class MapListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     public static final String MAP_FILENAME = "edu.utep.cs.cs4330.androidwars.MAP_FILENAME";
@@ -30,7 +30,7 @@ public class MapListActivity extends AppCompatActivity implements AdapterView.On
 
         ResourceManager.context = this;
 
-        listViewMap = (ListView)findViewById(R.id.list_view_map);
+        listViewMap = (ListView) findViewById(R.id.list_view_map);
 
         // Load the list with all the map filenames
         List<String> maps = ResourceManager.getMaps();
@@ -42,7 +42,7 @@ public class MapListActivity extends AppCompatActivity implements AdapterView.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String selectedFilename = (String)listViewMap.getAdapter().getItem(position);
+        String selectedFilename = (String) listViewMap.getAdapter().getItem(position);
         Intent intent = new Intent(this, SandboxActivity.class);
         intent.putExtra(MAP_FILENAME, selectedFilename);
         startActivity(intent);

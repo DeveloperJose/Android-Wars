@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     >
 
-    <edu.utep.cs.cs4330.androidwars.map.MapView
+    <edu.utep.cs.cs4330.androidwars.game.view.MapView
         android:id="@+id/map_view_sandbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

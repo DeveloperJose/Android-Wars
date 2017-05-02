@@ -1,4 +1,4 @@
-package edu.utep.cs.cs4330.androidwars;
+package edu.utep.cs.cs4330.androidwars.game.view;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,11 +8,11 @@ import android.graphics.RectF;
 import android.text.TextPaint;
 import android.view.View;
 
-public class TextMessage {
+public final class TextMessage {
     /**
      * Margin added to all messages with backgrounds
      */
-    private static final float BG_MARGIN = 15;
+    private static final float BG_MARGIN = 10;
 
     public String message;
     public TextPosition position;
@@ -21,20 +21,20 @@ public class TextMessage {
     public int backgroundColor;
     public int durationMs;
 
-    public TextMessage(){
+    public TextMessage() {
         fontSize = 100f;
         fontColor = Color.WHITE;
         backgroundColor = Color.alpha(0);
         durationMs = -1;
     }
 
-    public TextMessage(String message, TextPosition position){
+    public TextMessage(String message, TextPosition position) {
         this();
         this.message = message;
         this.position = position;
     }
 
-    public void draw(View view, Canvas canvas){
+    public void draw(View view, Canvas canvas) {
         // Background drawing
         Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         backgroundPaint.setColor(backgroundColor);
@@ -45,21 +45,21 @@ public class TextMessage {
         canvas.drawText(message, rect.left, rect.top, getPaint());
     }
 
-    private Paint getPaint(){
-        Paint p = new TextPaint(Paint.ANTI_ALIAS_FLAG);;
+    private Paint getPaint() {
+        Paint p = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        ;
         p.setTextSize(fontSize);
         p.setColor(fontColor);
         return p;
     }
 
-    private RectF getRect(View view){
+    private RectF getRect(View view) {
         float x, y;
 
         if (position == TextPosition.Center) {
             x = view.getMeasuredWidth() / 2;
             y = view.getMeasuredHeight() / 2;
-        }
-        else{
+        } else {
             x = view.getMeasuredWidth() / 2;
             y = view.getTop() + getTextHeight();
         }
@@ -67,10 +67,10 @@ public class TextMessage {
         // Otherwise it isn't properly centered
         x -= getTextWidth() / 2;
 
-        return new RectF(x, y , 0, 0);
+        return new RectF(x, y, 0, 0);
     }
 
-    public Rect getBackgroundRect(View view){
+    public Rect getBackgroundRect(View view) {
         // Get the rectangle that can fit the text
         Rect rectBackground = new Rect();
         getPaint().getTextBounds(message, 0, message.length(), rectBackground);
@@ -81,7 +81,7 @@ public class TextMessage {
 
         // Place it where the text actually is
         RectF rectText = getRect(view);
-        rectBackground.offset((int)rectText.left, (int)rectText.top);
+        rectBackground.offset((int) rectText.left, (int) rectText.top);
 
         return rectBackground;
     }
@@ -90,19 +90,19 @@ public class TextMessage {
         return getPaint().measureText(message);
     }
 
-    private float getTextHeight(){
+    private float getTextHeight() {
         Paint.FontMetrics fm = getPaint().getFontMetrics();
         return fm.descent - fm.ascent;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(this == obj) return true;
-        if(obj == null) return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
 
-        TextMessage other = (TextMessage)obj;
-        if(!message.equals(other.message)) return false;
+        TextMessage other = (TextMessage) obj;
+        if (!message.equals(other.message)) return false;
 
         return true;
     }

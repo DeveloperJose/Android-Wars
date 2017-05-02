@@ -1,14 +1,14 @@
 /**
  * Author: Jose Perez <josegperez@mail.com>
  */
-package edu.utep.cs.cs4330.androidwars.map.terrain;
+package edu.utep.cs.cs4330.androidwars.game.terrain;
 
 import android.graphics.Color;
 
-import edu.utep.cs.cs4330.androidwars.map.Vector2;
+import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
 public class TerrainWall extends Terrain {
-    public TerrainWall(Vector2 mapPosition){
+    public TerrainWall(Vector2 mapPosition) {
         super("terrain_wall", Color.RED, mapPosition);
     }
 }

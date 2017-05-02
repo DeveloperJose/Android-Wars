@@ -3,20 +3,18 @@
  */
 package edu.utep.cs.cs4330.androidwars.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 
-import edu.utep.cs.cs4330.androidwars.map.GameManager;
-import edu.utep.cs.cs4330.androidwars.map.Map;
-import edu.utep.cs.cs4330.androidwars.map.MapView;
 import edu.utep.cs.cs4330.androidwars.R;
-import edu.utep.cs.cs4330.androidwars.map.Team;
-import edu.utep.cs.cs4330.androidwars.map.Vector2;
-import edu.utep.cs.cs4330.androidwars.map.unit.TestUnit;
+import edu.utep.cs.cs4330.androidwars.game.GameManager;
+import edu.utep.cs.cs4330.androidwars.game.Team;
+import edu.utep.cs.cs4330.androidwars.game.map.Map;
+import edu.utep.cs.cs4330.androidwars.game.unit.TestUnit;
+import edu.utep.cs.cs4330.androidwars.game.view.MapView;
+import edu.utep.cs.cs4330.androidwars.resource.ResourceManager;
 import edu.utep.cs.cs4330.androidwars.sound.SongManager;
-import edu.utep.cs.cs4330.androidwars.sound.SoundManager;
+import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
 public class SandboxActivity extends AppCompatActivity {
     private MapView mapViewSandbox;
@@ -29,11 +27,11 @@ public class SandboxActivity extends AppCompatActivity {
         // Set-up Settings
         ResourceManager.context = this;
 
-        mapViewSandbox = (MapView)findViewById(R.id.map_view_sandbox);
+        mapViewSandbox = (MapView) findViewById(R.id.map_view_sandbox);
 
         Bundle intentData = getIntent().getExtras();
         Map map = null;
-        if(intentData != null){
+        if (intentData != null) {
             String filename = intentData.getString(MapListActivity.MAP_FILENAME);
             map = Map.fromFilename(filename);
         }
@@ -45,10 +43,10 @@ public class SandboxActivity extends AppCompatActivity {
         teamOne.addUnit(new TestUnit(new Vector2(3, 0)));
 
         Team teamTwo = new Team(map, 2);
-        teamTwo.addUnit(new TestUnit(new Vector2(map.width-1, map.height-1)));
-        teamTwo.addUnit(new TestUnit(new Vector2(map.width-2, map.height-1)));
-        teamTwo.addUnit(new TestUnit(new Vector2(map.width-3, map.height-1)));
-        teamTwo.addUnit(new TestUnit(new Vector2(map.width-4, map.height-1)));
+        teamTwo.addUnit(new TestUnit(new Vector2(map.width - 1, map.height - 1)));
+        teamTwo.addUnit(new TestUnit(new Vector2(map.width - 2, map.height - 1)));
+        teamTwo.addUnit(new TestUnit(new Vector2(map.width - 3, map.height - 1)));
+        teamTwo.addUnit(new TestUnit(new Vector2(map.width - 4, map.height - 1)));
 
         mapViewSandbox.setMap(map);
         GameManager gameManager = new GameManager(mapViewSandbox, teamOne, teamTwo);

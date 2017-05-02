@@ -1,10 +1,10 @@
 /**
  * Author: Jose Perez <josegperez@mail.com> and Diego Reynoso
- *
+ * <p>
  * Useful Operators:
  * https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/math/Vector2.java
  */
-package edu.utep.cs.cs4330.androidwars.map;
+package edu.utep.cs.cs4330.androidwars.util;
 
 import java.io.Serializable;
 
@@ -18,16 +18,16 @@ public final class Vector2 implements Serializable {
         this.Y = y;
     }
 
-    public Vector2(Vector2 other){
+    public Vector2(Vector2 other) {
         this.X = other.X;
         this.Y = other.Y;
     }
 
-    public double length(){
+    public double length() {
         return Math.sqrt(X * X + Y * Y);
     }
 
-    public Vector2 normalize(){
+    public Vector2 normalize() {
         final double length = length();
         Vector2 copy = new Vector2(this);
         if (length != 0) {
@@ -38,7 +38,7 @@ public final class Vector2 implements Serializable {
     }
 
     @Override
-    public int hashCode () {
+    public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + Float.floatToIntBits(X);
@@ -47,11 +47,11 @@ public final class Vector2 implements Serializable {
     }
 
     @Override
-    public boolean equals (Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        Vector2 other = (Vector2)obj;
+        Vector2 other = (Vector2) obj;
         if (Float.floatToIntBits(X) != Float.floatToIntBits(other.X)) return false;
         if (Float.floatToIntBits(Y) != Float.floatToIntBits(other.Y)) return false;
         return true;

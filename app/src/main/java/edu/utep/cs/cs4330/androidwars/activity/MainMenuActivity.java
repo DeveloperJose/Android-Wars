@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import edu.utep.cs.cs4330.androidwars.R;
+import edu.utep.cs.cs4330.androidwars.resource.ResourceManager;
 
 public class MainMenuActivity extends AppCompatActivity {
     @Override
@@ -26,10 +27,9 @@ public class MainMenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onClickMultiPlayer(View view){
+    public void onClickMultiPlayer(View view) {
 
     }
-
 
 
 }

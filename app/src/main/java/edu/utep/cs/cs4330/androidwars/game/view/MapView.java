@@ -1,7 +1,7 @@
 /**
  * Author: Jose Perez <josegperez@mail.com> and Diego Reynoso
  */
-package edu.utep.cs.cs4330.androidwars.map;
+package edu.utep.cs.cs4330.androidwars.game.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,19 +10,17 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.utep.cs.cs4330.androidwars.TextMessage;
-import edu.utep.cs.cs4330.androidwars.TextPosition;
-import edu.utep.cs.cs4330.androidwars.activity.ResourceManager;
-import edu.utep.cs.cs4330.androidwars.map.unit.Unit;
+import edu.utep.cs.cs4330.androidwars.game.map.Map;
+import edu.utep.cs.cs4330.androidwars.game.map.Place;
+import edu.utep.cs.cs4330.androidwars.game.unit.Unit;
+import edu.utep.cs.cs4330.androidwars.resource.ResourceManager;
+import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
 public final class MapView extends View {
     private static final String TAG = "AndroidWars.BoardView";
@@ -31,17 +29,20 @@ public final class MapView extends View {
     private final int colorMapHighlight = Color.argb(125, 255, 255, 125);
 
     private final Paint paintMapBackground = new Paint(Paint.ANTI_ALIAS_FLAG);
+
     {
         paintMapBackground.setColor(colorMapBackground);
     }
 
     private final Paint paintMapGrid = new Paint(Paint.ANTI_ALIAS_FLAG);
+
     {
         paintMapGrid.setColor(colorMapGrid);
         paintMapGrid.setStrokeWidth(2);
     }
 
     private final Paint paintMapHighlight = new Paint(Paint.ANTI_ALIAS_FLAG);
+
     {
         paintMapHighlight.setColor(colorMapHighlight);
     }
@@ -70,14 +71,14 @@ public final class MapView extends View {
         invalidate();
     }
 
-    public Map getMap(){
+    public Map getMap() {
         return map;
     }
 
     public void showTextMessage(final TextMessage textMessage) {
         textMessageList.add(textMessage);
 
-        if(textMessage.durationMs > 0) {
+        if (textMessage.durationMs > 0) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -109,7 +110,7 @@ public final class MapView extends View {
         // We didn't select a unit
         // Check if there was a past unit selected
         else if (selectedUnit != null) {
-            notifyUnitMove(selectedUnit, selectedUnit.mapPosition, newPosition);
+            notifyUnitMove(selectedUnit, selectedUnit.getMapPosition(), newPosition);
             // Discard selection highlight
             selectedUnit = null;
         }

@@ -1,4 +1,4 @@
-package edu.utep.cs.cs4330.androidwars.map.unit;
+package edu.utep.cs.cs4330.androidwars.game.unit;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,13 +7,12 @@ import android.graphics.RectF;
 
 import java.util.List;
 
-import edu.utep.cs.cs4330.androidwars.map.Map;
-import edu.utep.cs.cs4330.androidwars.map.Vector2;
-import edu.utep.cs.cs4330.androidwars.map.terrain.Terrain;
-import edu.utep.cs.cs4330.androidwars.map.terrain.TerrainMountain;
-import edu.utep.cs.cs4330.androidwars.map.terrain.TerrainRiverH;
-import edu.utep.cs.cs4330.androidwars.map.terrain.TerrainRiverV;
-import edu.utep.cs.cs4330.androidwars.map.terrain.TerrainWall;
+import edu.utep.cs.cs4330.androidwars.game.terrain.Terrain;
+import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainMountain;
+import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainRiverH;
+import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainRiverV;
+import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainWall;
+import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
 public class TestUnit extends Unit{
     public TestUnit(Vector2 mapPosition){

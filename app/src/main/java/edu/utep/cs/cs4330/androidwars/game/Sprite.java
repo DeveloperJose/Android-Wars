@@ -1,20 +1,25 @@
 /**
  * Author: Jose Perez <josegperez@mail.com> and Diego Reynoso
  */
-package edu.utep.cs.cs4330.androidwars.map;
+package edu.utep.cs.cs4330.androidwars.game;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import edu.utep.cs.cs4330.androidwars.activity.ResourceManager;
+import edu.utep.cs.cs4330.androidwars.util.Vector2;
+import edu.utep.cs.cs4330.androidwars.resource.ResourceManager;
 
 public abstract class Sprite {
     private Bitmap bitmapSprite;
     private int colorDebug;
 
     protected Vector2 mapPosition;
+
+    public Vector2 getMapPosition(){
+        return mapPosition;
+    }
 
     public Sprite(String filename, int colorDebug, Vector2 mapPosition){
         bitmapSprite = ResourceManager.getBitmap(filename);

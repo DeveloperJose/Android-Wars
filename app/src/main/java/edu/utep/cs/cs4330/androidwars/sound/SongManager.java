@@ -6,25 +6,25 @@ package edu.utep.cs.cs4330.androidwars.sound;
 import android.content.Context;
 import android.media.MediaPlayer;
 
-public class SongManager {
+public final class SongManager {
     private static SongManager mSongManager;
 
     private Context mContext;
     private MediaPlayer mediaPlayer;
 
-    private SongManager(Context context){
+    private SongManager(Context context) {
         mContext = context;
     }
 
-    public static SongManager getInstance(Context context){
-        if(mSongManager == null)
+    public static SongManager getInstance(Context context) {
+        if (mSongManager == null)
             mSongManager = new SongManager(context);
 
         return mSongManager;
     }
 
-    public void playSong(int resID){
-        if(mediaPlayer != null) {
+    public void playSong(int resID) {
+        if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
 
@@ -33,13 +33,13 @@ public class SongManager {
         mediaPlayer.start();
     }
 
-    public void onPause(){
-        if(mediaPlayer != null)
+    public void onPause() {
+        if (mediaPlayer != null)
             mediaPlayer.pause();
     }
 
-    public void onResume(){
-        if(mediaPlayer != null)
+    public void onResume() {
+        if (mediaPlayer != null)
             mediaPlayer.start();
     }
 }
