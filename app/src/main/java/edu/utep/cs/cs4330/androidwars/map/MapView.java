@@ -14,10 +14,12 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+import edu.utep.cs.cs4330.androidwars.TextMessage;
 import edu.utep.cs.cs4330.androidwars.TextPosition;
 import edu.utep.cs.cs4330.androidwars.activity.ResourceManager;
 import edu.utep.cs.cs4330.androidwars.map.unit.Unit;
@@ -29,33 +31,22 @@ public final class MapView extends View {
     private final int colorMapHighlight = Color.argb(125, 255, 255, 125);
 
     private final Paint paintMapBackground = new Paint(Paint.ANTI_ALIAS_FLAG);
-
     {
         paintMapBackground.setColor(colorMapBackground);
     }
 
     private final Paint paintMapGrid = new Paint(Paint.ANTI_ALIAS_FLAG);
-
     {
         paintMapGrid.setColor(colorMapGrid);
         paintMapGrid.setStrokeWidth(2);
     }
 
     private final Paint paintMapHighlight = new Paint(Paint.ANTI_ALIAS_FLAG);
-
     {
         paintMapHighlight.setColor(colorMapHighlight);
     }
 
-    private static Paint paintText = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-    {
-        paintText.setTextSize(100f);
-        paintText.setColor(Color.WHITE);
-    }
-
-
-    private java.util.Map<String, TextPosition> textMap;
+    private List<TextMessage> textMessageList;
     private List<MapViewListener> listenerList;
     private Map map;
     private Unit selectedUnit;
@@ -83,34 +74,21 @@ public final class MapView extends View {
         return map;
     }
 
-    public void drawText(final String text, TextPosition position, long durationMs) {
-        textMap.put(text, position);
+    public void showTextMessage(final TextMessage textMessage) {
+        textMessageList.add(textMessage);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                textMap.remove(text);
-                invalidate();
-            }
-        }, durationMs);
+        if(textMessage.durationMs > 0) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    textMessageList.remove(textMessage);
+                    invalidate();
+                }
+            }, textMessage.durationMs);
+        }
 
         invalidate();
     }
-
-    private RectF rectFromPosition(TextPosition position) {
-        int left = 0;
-        int top = 0;
-        int right = 0;
-        int bottom = 0;
-
-        if (position == TextPosition.Center) {
-            left = right = getMeasuredWidth() / 2;
-            top = bottom = getMeasuredHeight() / 2;
-        }
-
-        return new RectF(left, top, right, bottom);
-    }
-
 
     public void onBoardViewTouch(int x, int y) {
         if (map == null)
@@ -122,6 +100,11 @@ public final class MapView extends View {
         // Check if we selected a unit to display path highlight
         if (place.unit != null) {
             selectedUnit = place.unit;
+            TextMessage textMessage = new TextMessage("Selected: " + selectedUnit.getClass().getSimpleName(), null);
+            textMessage.backgroundColor = Color.WHITE;
+            textMessage.fontColor = Color.BLACK;
+            textMessage.durationMs = 3000;
+            showTextMessage(textMessage);
         }
         // We didn't select a unit
         // Check if there was a past unit selected
@@ -161,17 +144,6 @@ public final class MapView extends View {
         drawText(canvas);
     }
 
-    private void drawText(Canvas canvas) {
-        for (java.util.Map.Entry<String, TextPosition> entry : textMap.entrySet()) {
-            String text = entry.getKey();
-            TextPosition textPosition = entry.getValue();
-
-            RectF rect = rectFromPosition(textPosition);
-            float offset = paintText.measureText(text) / 2;
-            Log.d("D", "Drawing");
-            canvas.drawText(text, rect.left - offset, rect.top, paintText);
-        }
-    }
     private void drawPlaces(Canvas canvas) {
         for (int x = 0; x < getVerticalLines(); x++) {
             for (int y = 0; y < getHorizontalLines(); y++) {
@@ -187,7 +159,6 @@ public final class MapView extends View {
                     // Regular map drawing
                 else
                     map.placeAt(x, y).draw(canvas, rect);
-
 
                 // Selection highlighting
                 if (selectedUnit != null && selectedUnit.canTraverse(map, x, y))
@@ -212,6 +183,11 @@ public final class MapView extends View {
         for (int i = 1; i < verticalLines; i++)
             canvas.drawLine(i * placeHeight, 0, i * placeHeight, getMeasuredHeight(), paintMapGrid);
 
+    }
+
+    private void drawText(Canvas canvas) {
+        for (TextMessage textMessage : textMessageList)
+            textMessage.draw(this, canvas);
     }
 
     protected float getPlaceWidth() {
@@ -247,7 +223,7 @@ public final class MapView extends View {
 
     private void onConstruct() {
         listenerList = new ArrayList<>();
-        textMap = new HashMap<>();
+        textMessageList = new ArrayList<>();
     }
 
     public MapView(Context context) {

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import edu.utep.cs.cs4330.androidwars.TextMessage;
 import edu.utep.cs.cs4330.androidwars.TextPosition;
 import edu.utep.cs.cs4330.androidwars.activity.ResourceManager;
 import edu.utep.cs.cs4330.androidwars.map.unit.Unit;
@@ -16,6 +17,13 @@ public class GameManager implements MapViewListener {
 
     private static final Paint paintHighlight = new Paint(Paint.ANTI_ALIAS_FLAG);{
         paintHighlight.setColor(Color.argb(125, 100, 100, 100));
+    }
+
+    private static final TextMessage textMessageTurnChange = new TextMessage();
+    {
+        textMessageTurnChange.message = "Turn Change!";
+        textMessageTurnChange.position = TextPosition.Center;
+        textMessageTurnChange.durationMs = 1500;
     }
 
     private MapView mapView;
@@ -50,7 +58,7 @@ public class GameManager implements MapViewListener {
         else
             currentPlayer = teamOne.teamNumber;
 
-        mapView.drawText("Turn Change!", TextPosition.Center, 1500);
+        mapView.showTextMessage(textMessageTurnChange);
         updateUnits();
     }
 
