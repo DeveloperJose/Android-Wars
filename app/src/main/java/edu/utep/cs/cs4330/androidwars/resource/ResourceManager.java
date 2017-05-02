@@ -17,6 +17,7 @@ import java.util.Scanner;
 
 import edu.utep.cs.cs4330.androidwars.R;
 import edu.utep.cs.cs4330.androidwars.game.Team;
+import edu.utep.cs.cs4330.androidwars.util.SerialBitmap;
 
 public final class ResourceManager {
     private static String TAG = "AndroidWars.RsrcMngr";
@@ -55,9 +56,10 @@ public final class ResourceManager {
         return context.getResources().getIdentifier(filename, type, context.getPackageName());
     }
 
-    public static Bitmap getBitmap(String filename) {
+    public static SerialBitmap getBitmap(String filename) {
         int resID = getResourceID("raw", filename);
-        return BitmapFactory.decodeResource(context.getResources(), resID);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resID);
+        return new SerialBitmap(bitmap);
     }
 
     public static Scanner getScanner(String filename) {

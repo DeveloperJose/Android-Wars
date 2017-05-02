@@ -5,6 +5,8 @@ package edu.utep.cs.cs4330.androidwars.game.terrain;
 
 import android.util.Log;
 
+import java.io.Serializable;
+
 import edu.utep.cs.cs4330.androidwars.game.Sprite;
 import edu.utep.cs.cs4330.androidwars.util.Vector2;
 

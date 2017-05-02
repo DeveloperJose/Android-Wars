@@ -24,7 +24,7 @@ import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
 public final class MapView extends View {
     private static final String TAG = "AndroidWars.BoardView";
-    private final int colorMapBackground = Color.argb(255, 102, 163, 255);
+    private final int colorMapBackground = Color.argb(255, 102, 255, 100);
     private final int colorMapGrid = Color.argb(50, 255, 255, 255);
     private final int colorMapHighlight = Color.argb(125, 255, 255, 125);
 
@@ -157,14 +157,12 @@ public final class MapView extends View {
                 // Designer (random colors)
                 if (map == null)
                     canvas.drawRect(rect, ResourceManager.getRandomPaint());
-                    // Regular map drawing
                 else
                     map.placeAt(x, y).draw(canvas, rect);
 
                 // Selection highlighting
                 if (selectedUnit != null && selectedUnit.canTraverse(map, x, y))
                     notifyUnitHighlight(selectedUnit, canvas, rect);
-
             }
         }
     }

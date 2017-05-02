@@ -3,6 +3,7 @@
  */
 package edu.utep.cs.cs4330.androidwars.game.map;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,7 +14,7 @@ import edu.utep.cs.cs4330.androidwars.util.Vector2;
 /**
  * A map representing a playing field of a specified size
  */
-public final class Map {
+public final class Map implements Serializable {
     private static final String TAG = "AndroidWars.Map";
     private List<MapListener> listeners;
     private Place[][] places;

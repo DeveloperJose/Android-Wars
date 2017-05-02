@@ -3,16 +3,18 @@
  */
 package edu.utep.cs.cs4330.androidwars.game;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import java.io.Serializable;
+
+import edu.utep.cs.cs4330.androidwars.util.SerialBitmap;
 import edu.utep.cs.cs4330.androidwars.util.Vector2;
 import edu.utep.cs.cs4330.androidwars.resource.ResourceManager;
 
-public abstract class Sprite {
-    private Bitmap bitmapSprite;
+public abstract class Sprite implements Serializable {
+    private SerialBitmap serialBitmapSprite;
     private int colorDebug;
 
     protected Vector2 mapPosition;
@@ -22,7 +24,7 @@ public abstract class Sprite {
     }
 
     public Sprite(String filename, int colorDebug, Vector2 mapPosition){
-        bitmapSprite = ResourceManager.getBitmap(filename);
+        serialBitmapSprite = ResourceManager.getBitmap(filename);
         this.colorDebug = colorDebug;
         this.mapPosition = mapPosition;
     }
@@ -38,10 +40,10 @@ public abstract class Sprite {
     }
 
     public void draw(Canvas canvas, RectF rect){
-        if(bitmapSprite == null)
+        if(serialBitmapSprite.bitmap == null)
             drawDebug(canvas, rect);
         else
-            canvas.drawBitmap(bitmapSprite, null, rect, getAlphaPaint());
+            canvas.drawBitmap(serialBitmapSprite.bitmap, null, rect, getAlphaPaint());
     }
 
     public void drawDebug(Canvas canvas, RectF rect){

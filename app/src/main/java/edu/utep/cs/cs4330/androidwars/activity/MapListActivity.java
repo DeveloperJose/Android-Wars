@@ -15,10 +15,15 @@ import android.widget.ListView;
 import java.util.List;
 
 import edu.utep.cs.cs4330.androidwars.R;
+import edu.utep.cs.cs4330.androidwars.game.map.Map;
+import edu.utep.cs.cs4330.androidwars.game.terrain.Terrain;
+import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainForest;
 import edu.utep.cs.cs4330.androidwars.resource.ResourceManager;
 import edu.utep.cs.cs4330.androidwars.sound.SongManager;
+import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
 public class MapListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+    public static final String EXTRA_MAP = "edu.utep.cs.cs4330.androidwars.MAP";
     public static final String MAP_FILENAME = "edu.utep.cs.cs4330.androidwars.MAP_FILENAME";
 
     private ListView listViewMap;
@@ -34,6 +39,7 @@ public class MapListActivity extends AppCompatActivity implements AdapterView.On
 
         // Load the list with all the map filenames
         List<String> maps = ResourceManager.getMaps();
+        maps.add("sandbox");
         ListAdapter adapter = new ArrayAdapter<>(this, R.layout.adapter_item, maps);
         listViewMap.setAdapter(adapter);
 
@@ -44,7 +50,15 @@ public class MapListActivity extends AppCompatActivity implements AdapterView.On
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         String selectedFilename = (String) listViewMap.getAdapter().getItem(position);
         Intent intent = new Intent(this, SandboxActivity.class);
-        intent.putExtra(MAP_FILENAME, selectedFilename);
+
+        if(selectedFilename.equalsIgnoreCase("sandbox")) {
+            Map testMap = new Map(6, 10);
+            testMap.placeAt(0, 2).terrain = new TerrainForest(new Vector2(0, 2));
+            intent.putExtra(EXTRA_MAP, testMap);
+        }
+        else
+            intent.putExtra(MAP_FILENAME, selectedFilename);
+
         startActivity(intent);
     }
 

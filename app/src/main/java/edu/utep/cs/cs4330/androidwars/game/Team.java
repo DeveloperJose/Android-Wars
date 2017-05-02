@@ -1,12 +1,13 @@
 package edu.utep.cs.cs4330.androidwars.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.utep.cs.cs4330.androidwars.game.map.Map;
 import edu.utep.cs.cs4330.androidwars.game.unit.Unit;
 
-public final class Team {
+public final class Team implements Serializable {
     /**
      * The list of units this team owns
      */

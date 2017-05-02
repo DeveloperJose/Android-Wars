@@ -8,15 +8,14 @@ import android.graphics.RectF;
 import java.util.List;
 
 import edu.utep.cs.cs4330.androidwars.game.terrain.Terrain;
-import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainMountain;
 import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainRiverH;
 import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainRiverV;
-import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainWall;
+import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainValley;
 import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
-public class TestUnit extends Unit {
-    public TestUnit(Vector2 mapPosition) {
-        super("", -1, mapPosition);
+public class ThiefUnit extends Unit {
+    public ThiefUnit(Vector2 mapPosition) {
+        super("unit_thief", -1, mapPosition);
     }
 
     @Override
@@ -25,15 +24,12 @@ public class TestUnit extends Unit {
             return false;
 
         boolean canTraverse = true;
-        // Cannot traverse mountains
-        canTraverse &= !(terrain instanceof TerrainMountain);
+        // Cannot traverse valley
+        canTraverse &= !(terrain instanceof TerrainValley);
 
         // Cannot traverse water
         canTraverse &= !(terrain instanceof TerrainRiverH);
         canTraverse &= !(terrain instanceof TerrainRiverV);
-
-        // No walking through walls
-        canTraverse &= !(terrain instanceof TerrainWall);
 
         return canTraverse;
     }
@@ -56,8 +52,8 @@ public class TestUnit extends Unit {
         p.setColor(Color.RED);
         p.setTextSize(50f);
         p.setAlpha(getAlpha());
-        String name = "Diego";
+        String name = "Thief";
         float offset = p.measureText(name) / 2;
-        canvas.drawText("Diego", rect.centerX() - offset, rect.centerY(), p);
+        canvas.drawText("Thief", rect.centerX() - offset, rect.centerY(), p);
     }
 }
