@@ -9,6 +9,6 @@ import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
 public class TerrainBridgeV extends Terrain {
     public TerrainBridgeV(Vector2 mapPosition) {
-        super("terrain_bridgev", Color.GRAY, mapPosition);
+        super("terrain_bridgevalley", Color.GRAY, mapPosition);
     }
 }

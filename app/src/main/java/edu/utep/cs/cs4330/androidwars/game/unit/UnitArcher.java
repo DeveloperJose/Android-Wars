@@ -8,15 +8,14 @@ import android.graphics.RectF;
 import java.util.List;
 
 import edu.utep.cs.cs4330.androidwars.game.terrain.Terrain;
-import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainRiverH;
-import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainRiverV;
+import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainRiver;
 import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainValley;
 import edu.utep.cs.cs4330.androidwars.game.terrain.TerrainWall;
 import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
-public class WizardUnit extends Unit {
-    public WizardUnit(Vector2 mapPosition) {
-        super("unit_wizard", -1, mapPosition);
+public class UnitArcher extends Unit {
+    public UnitArcher(Vector2 mapPosition) {
+        super("unit_archer", -1, mapPosition);
     }
 
     @Override
@@ -29,8 +28,7 @@ public class WizardUnit extends Unit {
         canTraverse &= !(terrain instanceof TerrainValley);
 
         // Cannot traverse water
-        canTraverse &= !(terrain instanceof TerrainRiverH);
-        canTraverse &= !(terrain instanceof TerrainRiverV);
+        canTraverse &= !(terrain instanceof TerrainRiver);
 
         // No walking through walls
         canTraverse &= !(terrain instanceof TerrainWall);
@@ -42,23 +40,4 @@ public class WizardUnit extends Unit {
     public List<Vector2> getMovementShape() {
         return MovementShape.createDiamond(mapPosition, 2);
     }
-
-    @Override
-    public void drawDebug(Canvas canvas, RectF rect) {
-        Paint p = new Paint();
-        p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.RED);
-        p.setStrokeWidth(5f);
-        p.setAlpha(getAlpha());
-        canvas.drawOval(rect, p);
-
-        p = new Paint();
-        p.setColor(Color.RED);
-        p.setTextSize(50f);
-        p.setAlpha(getAlpha());
-        String name = "Wizard";
-        float offset = p.measureText(name) / 2;
-        canvas.drawText("Wizard", rect.centerX() - offset, rect.centerY(), p);
-    }
 }
-

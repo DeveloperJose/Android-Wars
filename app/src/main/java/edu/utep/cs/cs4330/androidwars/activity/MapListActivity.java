@@ -63,6 +63,12 @@ public class MapListActivity extends AppCompatActivity implements AdapterView.On
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        SongManager.getInstance(this).playSong(R.raw.song_nowhere_land);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         SongManager.getInstance(this).onPause();
@@ -72,11 +78,5 @@ public class MapListActivity extends AppCompatActivity implements AdapterView.On
     protected void onResume() {
         super.onResume();
         SongManager.getInstance(this).onResume();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        SongManager.getInstance(this).playSong(R.raw.song_kick_shock);
     }
 }

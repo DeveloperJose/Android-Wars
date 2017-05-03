@@ -50,20 +50,21 @@ public final class MapView extends View {
     private List<TextMessage> textMessageList;
     private List<MapViewListener> listenerList;
     private Map map;
+
     private Unit selectedUnit;
 
     public void registerListener(MapViewListener listener) {
         listenerList.add(listener);
     }
 
-    public void notifyUnitMove(Unit selectedUnit, Vector2 oldPosition, Vector2 newPosition) {
+    public void notifySelectPlace(Place place) {
         for (MapViewListener listener : listenerList)
-            listener.onUnitMove(selectedUnit, oldPosition, newPosition);
+            listener.onSelectPlace(place);
     }
 
-    public void notifyUnitHighlight(Unit selectedUnit, Canvas canvas, RectF rect) {
+    public void notifyDrawPlace(Place place, Canvas canvas, RectF rect) {
         for (MapViewListener listener : listenerList)
-            listener.onUnitHighlight(selectedUnit, canvas, rect);
+            listener.onDrawPlace(place, canvas, rect);
     }
 
     public void setMap(Map map) {
@@ -95,26 +96,9 @@ public final class MapView extends View {
         if (map == null)
             return;
 
-        Vector2 newPosition = new Vector2(x, y);
-        Place place = map.placeAt(newPosition);
-
-        // Check if we selected a unit to display path highlight
-        if (place.unit != null) {
-            selectedUnit = place.unit;
-            TextMessage textMessage = new TextMessage("Selected: " + selectedUnit.getClass().getSimpleName(), null);
-            textMessage.backgroundColor = Color.WHITE;
-            textMessage.fontColor = Color.BLACK;
-            textMessage.durationMs = 3000;
-            showTextMessage(textMessage);
-        }
-        // We didn't select a unit
-        // Check if there was a past unit selected
-        else if (selectedUnit != null) {
-            notifyUnitMove(selectedUnit, selectedUnit.getMapPosition(), newPosition);
-            // Discard selection highlight
-            selectedUnit = null;
-        }
-    }
+        Place place = map.placeAt(x, y);
+        notifySelectPlace(place);
+   }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -157,12 +141,11 @@ public final class MapView extends View {
                 // Designer (random colors)
                 if (map == null)
                     canvas.drawRect(rect, ResourceManager.getRandomPaint());
-                else
-                    map.placeAt(x, y).draw(canvas, rect);
-
-                // Selection highlighting
-                if (selectedUnit != null && selectedUnit.canTraverse(map, x, y))
-                    notifyUnitHighlight(selectedUnit, canvas, rect);
+                else {
+                    Place place = map.placeAt(x, y);
+                    place.draw(canvas, rect);
+                    notifyDrawPlace(place, canvas, rect);
+                }
             }
         }
     }

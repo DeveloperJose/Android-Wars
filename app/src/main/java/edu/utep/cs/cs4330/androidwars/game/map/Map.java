@@ -4,6 +4,7 @@
 package edu.utep.cs.cs4330.androidwars.game.map;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -64,7 +65,7 @@ public final class Map implements Serializable {
         places = new Place[width][height];
         for (int i = 0; i < places.length; i++)
             for (int j = 0; j < places[i].length; j++)
-                places[i][j] = new Place();
+                places[i][j] = new Place(new Vector2(i, j));
     }
 
     private void notifyOnBoardUpdate() {
@@ -81,9 +82,46 @@ public final class Map implements Serializable {
     }
 
     public synchronized Place placeAt(int x, int y) {
-        if (x < 0 || y < 0 || x >= width || y >= height)
+        if (!isValidPosition(x, y))
             return null;
 
         return places[x][y];
+    }
+
+    public boolean isValidPosition(int x, int y){
+        return x >= 0 && y >= 0 && x < width && y < height;
+    }
+
+    public boolean isValidPosition(Vector2 pos){
+        return isValidPosition(pos.X, pos.Y);
+    }
+
+    public List<Place> getPlaceNeighbors(Vector2 pos){
+        List<Vector2> neighbors = getPositionNeighbors(pos);
+        List<Place> placeList = new ArrayList<>();
+
+        for(Vector2 vector : neighbors)
+            placeList.add(placeAt(vector));
+
+        return placeList;
+    }
+
+    public List<Vector2> getPositionNeighbors(Vector2 pos){
+        List<Vector2> neighbors = new ArrayList<>();
+        Vector2 up = new Vector2(pos.X, pos.Y-1);
+        Vector2 down = new Vector2(pos.X, pos.Y+1);
+        Vector2 left = new Vector2(pos.X-1, pos.Y);
+        Vector2 right = new Vector2(pos.X+1, pos.Y);
+
+        if(isValidPosition(up))
+            neighbors.add(up);
+        if(isValidPosition(down))
+            neighbors.add(down);
+        if(isValidPosition(left))
+            neighbors.add(left);
+        if(isValidPosition(right))
+            neighbors.add(right);
+
+        return neighbors;
     }
 }

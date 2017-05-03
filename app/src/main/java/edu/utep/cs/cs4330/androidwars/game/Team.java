@@ -51,7 +51,9 @@ public final class Team implements Serializable {
      * Allows all of this team's units to move again
      */
     public void resetTurn() {
-        for (Unit unit : unitList)
+        for (Unit unit : unitList) {
             unit.canMove = true;
+            unit.canAttack = true;
+        }
     }
 }

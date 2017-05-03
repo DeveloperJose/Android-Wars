@@ -1,16 +1,19 @@
-6 7
+6 10
 P P P P P P
-RH BV RH RH BV RH
+R BR R R BR R
 P P P P P P
-RH RH BV RH RH RH
+R R BR R R R
 P P P P P P
-RH BV RH RH BV RH
+P P P P P P
+BR R R R R BR
+P P P P P P
+R BR R R BR R
 P P P P P P
 1 1
-1 2
-1 4
-1 6
-7 1
-7 3 
-7 4
-7 5
+2 1
+4 1
+6 1
+1 10
+3 10
+4 10
+5 10

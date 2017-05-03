@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import edu.utep.cs.cs4330.androidwars.game.map.Place;
 import edu.utep.cs.cs4330.androidwars.game.unit.Unit;
 import edu.utep.cs.cs4330.androidwars.game.view.MapView;
 import edu.utep.cs.cs4330.androidwars.game.view.MapViewListener;
@@ -74,36 +75,73 @@ public final class GameManager implements MapViewListener {
         getCurrentTeam().resetTurn();
     }
 
+    private Unit selectedUnit;
+    private Unit highlightUnit;
+
     @Override
-    public void onUnitMove(Unit selectedUnit, Vector2 oldPosition, Vector2 newPosition) {
-        if (selectedUnit.currentTeam != getCurrentPlayer())
-            return;
+    public void onSelectPlace(Place place){
+        // We selected a unit from our team before
+        if(selectedUnit != null){
+            // Check unit movement first
+            if(selectedUnit.canMove){
+                // Check if they can move to the specified place
+                Vector2 oldPosition = selectedUnit.getMapPosition();
+                Vector2 newPosition = place.position;
+                if(selectedUnit.canTraverse(place)){
+                    // Update the unit variables
+                    selectedUnit.canMove = false;
+                    selectedUnit.mapPosition = newPosition;
 
-        if (!selectedUnit.canMove)
-            return;
+                    // Update the map
+                    mapView.getMap().placeAt(newPosition).unit = selectedUnit;
+                    mapView.getMap().placeAt(oldPosition).unit = null;
 
-        // The player wants to move and can traverse the place
-        if (selectedUnit.canTraverse(mapView.getMap(), newPosition)) {
-            selectedUnit.canMove = false;
-            selectedUnit.mapPosition = newPosition;
+                    // Check if the player has moved all their units
+                    if (getCurrentTeam().getAvailableUnits() == 0)
+                        changeTurns();
+                }
+                // Clear the highlight
+                highlightUnit = null;
 
-            mapView.getMap().placeAt(newPosition).unit = selectedUnit;
-            mapView.getMap().placeAt(oldPosition).unit = null;
+                // TODO: Highlight enemy units we can attack
+            }
+            else if(selectedUnit.canAttack){
+                // They can't move but can attack
+            }
+            else{
+                // They cannot do anything
+                selectedUnit = null;
+            }
+        }
+        else{
+            // We didn't select a unit before
+            // Check if we have just selected a unit
+            Unit placeUnit = place.unit;
 
-            // Check if the player has moved all their units
-            if (getCurrentTeam().getAvailableUnits() == 0)
-                changeTurns();
+            // Highlight unit
+            highlightUnit = placeUnit;
+
+            // Can only select units from own team
+            if(placeUnit != null && placeUnit.currentTeam == getCurrentPlayer())
+                selectedUnit = placeUnit;
         }
     }
 
     @Override
-    public void onUnitHighlight(Unit selectedUnit, Canvas canvas, RectF rect) {
+    public void onDrawPlace(Place place, Canvas canvas, RectF rect){
+        if(highlightUnit != null && highlightUnit.canTraverse(place)){
+            Paint p = getHighlightPaint(highlightUnit);
+            canvas.drawRect(rect, p);
+        }
+    }
+
+    public Paint getHighlightPaint(Unit selectedUnit) {
         Paint paint;
         if (selectedUnit.currentTeam != getCurrentPlayer() || !selectedUnit.canMove)
             paint = paintHighlightOpponent;
         else
             paint = paintHighlight;
 
-        canvas.drawRect(rect, paint);
+        return paint;
     }
 }

@@ -7,8 +7,8 @@ import android.graphics.Color;
 
 import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
-public class TerrainRiverH extends Terrain {
-    public TerrainRiverH(Vector2 mapPosition) {
-        super("terrain_riverh", Color.BLUE, mapPosition);
+public class TerrainBridgeR extends Terrain {
+    public TerrainBridgeR(Vector2 mapPosition) {
+        super("terrain_bridgeriver", Color.GRAY, mapPosition);
     }
 }

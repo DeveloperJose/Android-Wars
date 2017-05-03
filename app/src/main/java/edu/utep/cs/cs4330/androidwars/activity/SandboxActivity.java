@@ -10,14 +10,14 @@ import edu.utep.cs.cs4330.androidwars.R;
 import edu.utep.cs.cs4330.androidwars.game.GameManager;
 import edu.utep.cs.cs4330.androidwars.game.Team;
 import edu.utep.cs.cs4330.androidwars.game.map.Map;
-import edu.utep.cs.cs4330.androidwars.game.unit.ArcherUnit;
-import edu.utep.cs.cs4330.androidwars.game.unit.FlyingPegasusUnit;
-import edu.utep.cs.cs4330.androidwars.game.unit.HealerUnit;
-import edu.utep.cs.cs4330.androidwars.game.unit.KnightUnit;
-import edu.utep.cs.cs4330.androidwars.game.unit.SwordsmanUnit;
-import edu.utep.cs.cs4330.androidwars.game.unit.TestUnit;
-import edu.utep.cs.cs4330.androidwars.game.unit.ThiefUnit;
-import edu.utep.cs.cs4330.androidwars.game.unit.WizardUnit;
+import edu.utep.cs.cs4330.androidwars.game.unit.UnitArcher;
+import edu.utep.cs.cs4330.androidwars.game.unit.UnitPegasus;
+import edu.utep.cs.cs4330.androidwars.game.unit.UnitHealer;
+import edu.utep.cs.cs4330.androidwars.game.unit.UnitKnight;
+import edu.utep.cs.cs4330.androidwars.game.unit.UnitSwordsman;
+import edu.utep.cs.cs4330.androidwars.game.unit.UnitTest;
+import edu.utep.cs.cs4330.androidwars.game.unit.UnitThief;
+import edu.utep.cs.cs4330.androidwars.game.unit.UnitWizard;
 import edu.utep.cs.cs4330.androidwars.game.view.MapView;
 import edu.utep.cs.cs4330.androidwars.resource.ResourceManager;
 import edu.utep.cs.cs4330.androidwars.sound.SongManager;
@@ -50,16 +50,16 @@ public class SandboxActivity extends AppCompatActivity {
         }
 
         Team teamOne = new Team(map, 1);
-        teamOne.addUnit(new TestUnit(new Vector2(0, 0)));
-        teamOne.addUnit(new FlyingPegasusUnit(new Vector2(1, 0)));
-        teamOne.addUnit(new HealerUnit(new Vector2(2, 0)));
-        teamOne.addUnit(new KnightUnit(new Vector2(3, 0)));
+        teamOne.addUnit(new UnitTest(new Vector2(0, 0)));
+        teamOne.addUnit(new UnitPegasus(new Vector2(1, 0)));
+        teamOne.addUnit(new UnitHealer(new Vector2(2, 0)));
+        teamOne.addUnit(new UnitKnight(new Vector2(3, 0)));
 
         Team teamTwo = new Team(map, 2);
-        teamTwo.addUnit(new SwordsmanUnit(new Vector2(map.width - 1, map.height - 1)));
-        teamTwo.addUnit(new ThiefUnit(new Vector2(map.width - 2, map.height - 1)));
-        teamTwo.addUnit(new WizardUnit(new Vector2(map.width - 3, map.height - 1)));
-        teamTwo.addUnit(new ArcherUnit(new Vector2(map.width - 4, map.height - 1)));
+        teamTwo.addUnit(new UnitSwordsman(new Vector2(map.width - 1, map.height - 1)));
+        teamTwo.addUnit(new UnitThief(new Vector2(map.width - 2, map.height - 1)));
+        teamTwo.addUnit(new UnitWizard(new Vector2(map.width - 3, map.height - 1)));
+        teamTwo.addUnit(new UnitArcher(new Vector2(map.width - 4, map.height - 1)));
 
         mapViewSandbox.setMap(map);
         new GameManager(mapViewSandbox, teamOne, teamTwo);
@@ -68,7 +68,7 @@ public class SandboxActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        SongManager.getInstance(this).playSong(R.raw.song_nowhere_land);
+        SongManager.getInstance(this).playSong(R.raw.song_kick_shock);
     }
 
     @Override
