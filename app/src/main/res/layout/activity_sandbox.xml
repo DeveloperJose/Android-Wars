@@ -13,6 +13,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/btnEndTurn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:onClick="onClickBtnEndTurn"
+        android:text="End Turn"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:visibility="invisible" />
 
 
 </FrameLayout>

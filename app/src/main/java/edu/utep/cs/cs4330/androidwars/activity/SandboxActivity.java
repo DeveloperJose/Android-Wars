@@ -3,13 +3,20 @@
  */
 package edu.utep.cs.cs4330.androidwars.activity;
 
+import android.graphics.Canvas;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 
 import edu.utep.cs.cs4330.androidwars.R;
 import edu.utep.cs.cs4330.androidwars.game.GameManager;
 import edu.utep.cs.cs4330.androidwars.game.Team;
 import edu.utep.cs.cs4330.androidwars.game.map.Map;
+import edu.utep.cs.cs4330.androidwars.game.map.Place;
 import edu.utep.cs.cs4330.androidwars.game.unit.UnitArcher;
 import edu.utep.cs.cs4330.androidwars.game.unit.UnitPegasus;
 import edu.utep.cs.cs4330.androidwars.game.unit.UnitHealer;
@@ -19,13 +26,18 @@ import edu.utep.cs.cs4330.androidwars.game.unit.UnitTest;
 import edu.utep.cs.cs4330.androidwars.game.unit.UnitThief;
 import edu.utep.cs.cs4330.androidwars.game.unit.UnitWizard;
 import edu.utep.cs.cs4330.androidwars.game.view.MapView;
+import edu.utep.cs.cs4330.androidwars.game.view.MapViewListener;
 import edu.utep.cs.cs4330.androidwars.resource.ResourceManager;
 import edu.utep.cs.cs4330.androidwars.sound.SongManager;
 import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
+import static android.view.MotionEvent.ACTION_UP;
+
 public class SandboxActivity extends AppCompatActivity {
     private MapView mapViewSandbox;
+    private Button btnEndTurn;
 
+    private GameManager gameManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +47,7 @@ public class SandboxActivity extends AppCompatActivity {
         ResourceManager.context = this;
 
         mapViewSandbox = (MapView) findViewById(R.id.map_view_sandbox);
+        btnEndTurn = (Button)findViewById(R.id.btnEndTurn);
 
         Bundle intentData = getIntent().getExtras();
         Map map = null;
@@ -62,7 +75,31 @@ public class SandboxActivity extends AppCompatActivity {
         teamTwo.addUnit(new UnitArcher(new Vector2(map.width - 4, map.height - 1)));
 
         mapViewSandbox.setMap(map);
-        new GameManager(mapViewSandbox, teamOne, teamTwo);
+        gameManager = new GameManager(mapViewSandbox, teamOne, teamTwo);
+
+        mapViewSandbox.registerListener(new MapViewListener() {
+            @Override
+            public void onSelectPlace(Place place) {
+                if(btnEndTurn.getVisibility() == View.VISIBLE)
+                    btnEndTurn.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onDrawPlace(Place place, Canvas canvas, RectF rect) {
+
+            }
+
+            @Override
+            public void onHoldPlace(Place place, int duration) {
+                if(place.unit == null && duration > 10){
+                        btnEndTurn.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    public void onClickBtnEndTurn(View view){
+        gameManager.changeTurns();
     }
 
     @Override

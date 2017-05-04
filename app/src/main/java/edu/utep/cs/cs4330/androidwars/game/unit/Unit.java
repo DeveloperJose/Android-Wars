@@ -33,25 +33,18 @@ public abstract class Unit extends Sprite {
 
     @Override
     public int getAlpha() {
-        if (!canMove)
+        if (!canAttack)
             return 100;
 
         return super.getAlpha();
     }
 
-    public boolean canTraverse(Map map, int x, int y) {
-        return canTraverse(map, new Vector2(x, y));
-    }
-
-    public boolean canTraverse(Map map, Vector2 pos) {
-        // Cannot move outside of our movement range
-        if (!getMovementShape().contains(pos))
-            return false;
-
-        return canTraverse(map.placeAt(pos));
-    }
 
     public boolean canTraverse(Place place) {
+        // Cannot move outside of our movement range
+        if (!getMovementShape().contains(place.position))
+            return false;
+
         // Cannot move across certain terrains
         if (!canTraverseTerrain(place.terrain))
             return false;
@@ -61,6 +54,14 @@ public abstract class Unit extends Sprite {
             return false;
 
         return true;
+    }
+
+    public boolean canTraverse(Map map, int x, int y) {
+        return canTraverse(map, new Vector2(x, y));
+    }
+
+    public boolean canTraverse(Map map, Vector2 pos) {
+        return canTraverse(map.placeAt(pos));
     }
 
     @Override

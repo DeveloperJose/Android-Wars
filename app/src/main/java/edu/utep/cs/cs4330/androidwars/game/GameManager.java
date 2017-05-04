@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
+
+import java.util.List;
 
 import edu.utep.cs.cs4330.androidwars.game.map.Place;
 import edu.utep.cs.cs4330.androidwars.game.unit.Unit;
@@ -15,6 +18,7 @@ import edu.utep.cs.cs4330.androidwars.resource.ResourceManager;
 import edu.utep.cs.cs4330.androidwars.util.Vector2;
 
 public final class GameManager implements MapViewListener {
+    private static final String TAG = "AW.GameMngr";
     private static final Paint paintHighlightOpponent = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     {
@@ -47,7 +51,7 @@ public final class GameManager implements MapViewListener {
 
         this.mapView.registerListener(this);
         currentPlayer = ResourceManager.getRandomTeam(teamOne, teamTwo);
-        updateUnits();
+        getCurrentTeam().startTurn();
     }
 
     public Team getCurrentTeam() {
@@ -62,32 +66,30 @@ public final class GameManager implements MapViewListener {
     }
 
     public void changeTurns() {
+        getCurrentTeam().endTurn();
         if (currentPlayer == teamOne.teamNumber)
             currentPlayer = teamTwo.teamNumber;
         else
             currentPlayer = teamOne.teamNumber;
 
         mapView.showTextMessage(textMessageTurnChange);
-        updateUnits();
-    }
-
-    private void updateUnits() {
-        getCurrentTeam().resetTurn();
+        getCurrentTeam().startTurn();
     }
 
     private Unit selectedUnit;
     private Unit highlightUnit;
 
     @Override
-    public void onSelectPlace(Place place){
+    public void onSelectPlace(Place place) {
+        Log.d(TAG, "Touch");
         // We selected a unit from our team before
-        if(selectedUnit != null){
+        if (selectedUnit != null) {
             // Check unit movement first
-            if(selectedUnit.canMove){
+            if (selectedUnit.canMove) {
                 // Check if they can move to the specified place
                 Vector2 oldPosition = selectedUnit.getMapPosition();
                 Vector2 newPosition = place.position;
-                if(selectedUnit.canTraverse(place)){
+                if (selectedUnit.canTraverse(place)) {
                     // Update the unit variables
                     selectedUnit.canMove = false;
                     selectedUnit.mapPosition = newPosition;
@@ -102,18 +104,26 @@ public final class GameManager implements MapViewListener {
                 }
                 // Clear the highlight
                 highlightUnit = null;
+                //selectedUnit = null;
 
                 // TODO: Highlight enemy units we can attack
-            }
-            else if(selectedUnit.canAttack){
+            } else if (selectedUnit.canAttack) {
                 // They can't move but can attack
-            }
-            else{
+                List<Place> neighbors = mapView.getMap().getPlaceNeighbors(selectedUnit.getMapPosition());
+                for(Place neighbor : neighbors)
+                {
+                    if(neighbor.unit != null && neighbor.unit.currentTeam != getCurrentPlayer()){
+                        neighbor.unit = null;
+                        mapView.getMap().placeAt(neighbor.position).unit = null;
+                    }
+                }
+                selectedUnit.canAttack = false;
+                selectedUnit = null;
+            } else {
                 // They cannot do anything
                 selectedUnit = null;
             }
-        }
-        else{
+        } else {
             // We didn't select a unit before
             // Check if we have just selected a unit
             Unit placeUnit = place.unit;
@@ -122,14 +132,21 @@ public final class GameManager implements MapViewListener {
             highlightUnit = placeUnit;
 
             // Can only select units from own team
-            if(placeUnit != null && placeUnit.currentTeam == getCurrentPlayer())
+            if (placeUnit != null && placeUnit.currentTeam == getCurrentPlayer())
                 selectedUnit = placeUnit;
         }
     }
 
     @Override
-    public void onDrawPlace(Place place, Canvas canvas, RectF rect){
-        if(highlightUnit != null && highlightUnit.canTraverse(place)){
+    public void onHoldPlace(Place place, int duration) {
+
+    }
+
+    @Override
+    public void onDrawPlace(Place place, Canvas canvas, RectF rect) {
+        // Highlight the specified unit
+        // but only highlight places that unit can traverse
+        if (highlightUnit != null && highlightUnit.canTraverse(place)) {
             Paint p = getHighlightPaint(highlightUnit);
             canvas.drawRect(rect, p);
         }

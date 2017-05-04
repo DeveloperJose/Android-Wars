@@ -51,8 +51,6 @@ public final class MapView extends View {
     private List<MapViewListener> listenerList;
     private Map map;
 
-    private Unit selectedUnit;
-
     public void registerListener(MapViewListener listener) {
         listenerList.add(listener);
     }
@@ -60,6 +58,11 @@ public final class MapView extends View {
     public void notifySelectPlace(Place place) {
         for (MapViewListener listener : listenerList)
             listener.onSelectPlace(place);
+    }
+
+    public void notifyHoldPlace(Place place, int duration){
+        for (MapViewListener listener : listenerList)
+            listener.onHoldPlace(place, duration);
     }
 
     public void notifyDrawPlace(Place place, Canvas canvas, RectF rect) {
@@ -100,6 +103,15 @@ public final class MapView extends View {
         notifySelectPlace(place);
    }
 
+   public void onBoardViewLongTouch(int x, int y){
+       if (map == null)
+           return;
+
+       Place place = map.placeAt(x, y);
+       notifyHoldPlace(place, holdDuration);
+   }
+
+    private int holdDuration = 0;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -109,11 +121,23 @@ public final class MapView extends View {
                     int x = xy / 100;
                     int y = xy % 100;
                     onBoardViewTouch(x, y);
+                    onBoardViewLongTouch(x, y);
                     invalidate();
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
+                holdDuration = 0;
+                break;
             case MotionEvent.ACTION_MOVE:
+                holdDuration++;
+                xy = locatePlace(event.getX(), event.getY());
+                if (xy >= 0) {
+                    int x = xy / 100;
+                    int y = xy % 100;
+                    onBoardViewLongTouch(x, y);
+                    invalidate();
+                }
+                break;
             case MotionEvent.ACTION_CANCEL:
                 break;
         }
